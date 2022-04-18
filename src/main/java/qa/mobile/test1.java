@@ -19,17 +19,20 @@ public class test1 {
     @Test
     public void invalidUsername() {
         MobileElement userNameTextField = (MobileElement) driver.findElementByXPath("//android.widget.EditText[@content-desc=\"test-Username\"]");
+        MobileElement ele = (MobileElement) driver.findElementByAccessibilityId("test-Username");
         MobileElement passwordTextField = (MobileElement) driver.findElementByXPath("//android.widget.EditText[@content-desc=\"test-Password\"]");
         MobileElement loginButton = (MobileElement) driver.findElementByXPath("//android.view.ViewGroup[@content-desc=\"test-LOGIN\"]");
         MobileElement errorText = (MobileElement) driver.findElementByAccessibilityId("test-Error message");
         //  Username and password do not match any user in this service.
+       // userNameTextField.click();
+        ele.sendKeys("invalid");
 
-        userNameTextField.sendKeys("invalid");
-        passwordTextField.sendKeys("secret_sauce");
-        loginButton.click();
-        String errorTextValue = errorText.getText();
-        System.out.println(errorTextValue);
-        Assert.assertEquals(errorTextValue, "Username and password do not match any user in this service.");
+//        userNameTextField.sendKeys("invalid");
+//        passwordTextField.sendKeys("secret_sauce");
+//        loginButton.click();
+//        String errorTextValue = errorText.getText();
+//        System.out.println(errorTextValue);
+        //Assert.assertEquals(errorTextValue, "Username and password do not match any user in this service.");
     }
 
     @Test
