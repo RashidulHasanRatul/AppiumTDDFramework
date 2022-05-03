@@ -1,0 +1,23 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="suite1" parallel="false" > <!-- parallel="test"  for run parallel -->
+    <test name="Test">
+        <parameter name="platformName" value="Android"/>
+        <parameter name="platformVersion" value="8.1.0"/>
+        <parameter name="deviceName" value="Pixel 4"/>
+        <classes>
+            <class name="LoginTests"/>
+        </classes>
+
+        <!--If you want to run another device with different version just use this code
+         <test name="test1">
+        <parameter name="platformName" value="Android"/>
+        <parameter name="platformVersion" value="10.0"/>
+        <parameter name="deviceName" value="Pixel 4"/>
+        <classes>
+            <class name="com.test.TestClass1"/>
+        </classes>
+
+        -->
+    </test>
+</suite>
