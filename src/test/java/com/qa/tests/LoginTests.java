@@ -2,18 +2,40 @@ package com.qa.tests;
 
 import com.qa.tests.pages.LoginPage;
 import com.qa.tests.pages.ProductPage;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import java.lang.reflect.Method;
 
 public class LoginTests extends BaseTest {
     LoginPage loginPage;
     ProductPage productPage;
+    InputStream datais;
+    JSONObject loginUsers;
 
     @BeforeClass
-    public void beforeClass() {
-        System.out.println("Before Class");
+    public void beforeClass() throws Exception {
+        try {
+            System.out.println("Before Class");
+            String dataFile = "data/loginUsers.json";
+            datais = getClass().getClassLoader().getResourceAsStream(dataFile);
+            JSONTokener tokener = new JSONTokener(datais);
+            loginUsers = new JSONObject(tokener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           if (datais != null) {
+              datais.close();
+           }
+        }
+
+
+
     }
 
     @AfterClass
@@ -36,23 +58,24 @@ public class LoginTests extends BaseTest {
 
     @Test
     public void invalidUsername() {
-    	System.out.println("This is Invalid UserName Block");
-        loginPage.enterUserName("invalid");
-        loginPage.enterPassWord("secret_sauce");
+        System.out.println("This is Invalid UserName Block");
+        loginPage.enterUserName(loginUsers.getJSONObject("invalidUser").getString("username"));
+        loginPage.enterPassWord(loginUsers.getJSONObject("invalidUser").getString("password"));
         loginPage.pressLoginButton();
 
         String actualErrorMessage = loginPage.getErrorText();
         String expectedErrorMessage = "Username and password do not match any user in this service.";
         System.out.println("Actual Error Message: " + actualErrorMessage + "\n" + "Expected Error Message: " + expectedErrorMessage);
         Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
+
     }
 
 
     @Test
     public void invalidPassword() {
     	System.out.println("This is Invalid Password Block");
-        loginPage.enterUserName("standard_user");
-        loginPage.enterPassWord("invalid");
+        loginPage.enterUserName(loginUsers.getJSONObject("invalidPassword").getString("username"));
+        loginPage.enterPassWord(loginUsers.getJSONObject("invalidPassword").getString("password"));
         loginPage.pressLoginButton();
 
         String actualErrorMessage = loginPage.getErrorText();
@@ -65,8 +88,8 @@ public class LoginTests extends BaseTest {
 
     public void validLogin() {
      	System.out.println("This is valid Password Block");
-        loginPage.enterUserName("standard_user");
-        loginPage.enterPassWord("secret_sauce");
+        loginPage.enterUserName(loginUsers.getJSONObject("validUser").getString("username"));
+        loginPage.enterPassWord(loginUsers.getJSONObject("validUser").getString("password"));
         productPage = loginPage.pressLoginButton();
         String actualProductTitle = productPage.getProductTitle();
        String expectedProductTitle = "PRODUCTS";

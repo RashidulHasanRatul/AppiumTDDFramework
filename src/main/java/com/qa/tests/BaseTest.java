@@ -12,13 +12,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Properties;
+
 
 
 public class BaseTest {
     protected static AppiumDriver driver;
     protected static Properties prop;
+    protected static HashMap<String, String> strings = new HashMap<String, String>();
     InputStream inputStream;
+    InputStream stringsis;
+     TestUtils Utils = new TestUtils();
 
     // Get Value from testng.xml file and set it to capabilities properties
     // Get the value from properties file and set it to capabilities
@@ -34,6 +39,16 @@ public class BaseTest {
         try {
             prop = new Properties();
             String propFileName = "config.properties";
+            String xmlFileName = "strings/strings.xml";
+            // Load xml file
+            stringsis = getClass().getClassLoader().getResourceAsStream(xmlFileName);
+            // problem start here
+            prop.loadFromXML(stringsis);
+
+
+
+
+            // Load properties file
             inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
             prop.load(inputStream);
 

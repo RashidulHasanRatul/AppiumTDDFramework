@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="Suite" parallel="false">
+    <listeners>
+    <listener class-name="com.qa.listeners.TestListeners"/>
+    </listeners>
     <test name="Test">
-        <parameter name="emulator" value="true" />
-        <parameter name="deviceName" value="Pixel 4" />
-        <parameter name="platformVersion" value="8.1.0"  />
-        <parameter name="platformName" value="Android" />
-        <parameter name="udid" value="emulator-5554" />
+        <parameter name="emulator" value="true"/>
+        <parameter name="deviceName" value="Pixel 4"/>
+        <parameter name="platformVersion" value="8.1.0"/>
+        <parameter name="platformName" value="Android"/>
+        <parameter name="udid" value="emulator-5554"/>
         <classes>
             <class name="com.qa.tests.LoginTests"/>
-  
+
         </classes>
     </test>
-   
+
 </suite> <!-- Suite -->
