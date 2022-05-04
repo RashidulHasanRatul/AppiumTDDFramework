@@ -1,4 +1,5 @@
 package com.qa.tests;
+
 import com.qa.tests.utils.TestUtils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -16,20 +17,15 @@ import java.util.HashMap;
 import java.util.Properties;
 
 
-
 public class BaseTest {
     protected static AppiumDriver driver;
     protected static Properties prop;
-    protected static HashMap<String, String> strings = new HashMap<String, String>();
     InputStream inputStream;
-    InputStream stringsis;
-     TestUtils Utils = new TestUtils();
 
-    // Get Value from testng.xml file and set it to capabilities properties
     // Get the value from properties file and set it to capabilities
-    public BaseTest (){
+    public BaseTest() {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-       
+
     }
 
     @Parameters({"platformName", "platformVersion", "deviceName"})
@@ -39,15 +35,6 @@ public class BaseTest {
         try {
             prop = new Properties();
             String propFileName = "config.properties";
-            String xmlFileName = "strings/strings.xml";
-            // Load xml file
-            stringsis = getClass().getClassLoader().getResourceAsStream(xmlFileName);
-            // problem start here
-            prop.loadFromXML(stringsis);
-
-
-
-
             // Load properties file
             inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
             prop.load(inputStream);
@@ -91,11 +78,11 @@ public class BaseTest {
 
     public String getAttribute(MobileElement e, String attribute) {
         waitForVisibility(e);
-       return e.getAttribute(attribute);
+        return e.getAttribute(attribute);
     }
 
     @AfterTest
     public void afterTest() {
-    driver.quit();
+        driver.quit();
     }
 }
