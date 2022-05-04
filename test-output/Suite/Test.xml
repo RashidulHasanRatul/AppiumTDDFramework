@@ -3,7 +3,7 @@
 <testsuite ignored="0" hostname="DESKTOP-NVINHTA" failures="0" tests="3" name="Test" time="14.597" errors="0" timestamp="02 May 2022 09:46:44 GMT">
   <testcase classname="LoginTests" name="@BeforeMethod beforeMethod" time="0.02">
     <failure type="java.lang.RuntimeException" message="java.lang.NoSuchMethodException: jdk.proxy2.$Proxy14.proxyClassLookup()">
-      <![CDATA[java.lang.RuntimeException: java.lang.NoSuchMethodException: jdk.proxy2.$Proxy14.proxyClassLookup()
+        <![CDATA[java.lang.RuntimeException: java.lang.NoSuchMethodException: jdk.proxy2.$Proxy14.proxyClassLookup()
 at io.appium.java_client.pagefactory.bys.builder.AppiumByBuilder.prepareAnnotationMethods(AppiumByBuilder.java:85)
 at io.appium.java_client.pagefactory.bys.builder.AppiumByBuilder.getFilledValue(AppiumByBuilder.java:92)
 at io.appium.java_client.pagefactory.bys.builder.AppiumByBuilder.createBy(AppiumByBuilder.java:148)
@@ -17,7 +17,7 @@ at org.openqa.selenium.support.pagefactory.DefaultFieldDecorator.decorate(Defaul
 at io.appium.java_client.pagefactory.AppiumFieldDecorator.decorate(AppiumFieldDecorator.java:154)
 at org.openqa.selenium.support.PageFactory.proxyFields(PageFactory.java:113)
 at org.openqa.selenium.support.PageFactory.initElements(PageFactory.java:105)
-at com.qa.tests.BaseTest.<init>(BaseTest.java:26)
+at com.qa.BaseTest.<init>(BaseTest.java:26)
 at com.qa.tests.pages.LoginPage.<init>(LoginPage.java:7)
 at LoginTests.beforeMethod(LoginTests.java:30)
 Caused by: java.lang.NoSuchMethodException: jdk.proxy2.$Proxy14.proxyClassLookup()
@@ -45,7 +45,7 @@ at io.appium.java_client.pagefactory.bys.builder.AppiumByBuilder.prepareAnnotati
   <testcase classname="LoginTests" name="@AfterClass afterClass" time="0.0">
     <skipped/>
   </testcase> <!-- @AfterClass afterClass -->
-  <testcase classname="com.qa.tests.BaseTest" name="@AfterTest afterTest" time="0.0">
+  <testcase classname="com.qa.BaseTest" name="@AfterTest afterTest" time="0.0">
     <skipped/>
   </testcase> <!-- @AfterTest afterTest -->
   <testcase classname="LoginTests" name="invalidPassword" time="0.0">

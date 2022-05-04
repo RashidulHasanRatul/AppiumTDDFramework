@@ -1,5 +1,6 @@
 package com.qa.tests;
 
+import com.qa.BaseTest;
 import com.qa.tests.pages.LoginPage;
 import com.qa.tests.pages.ProductPage;
 import org.json.JSONObject;
@@ -39,7 +40,8 @@ public class LoginTests extends BaseTest {
            }
         }
 
-
+        closeApp();
+        launchApp();
 
     }
 

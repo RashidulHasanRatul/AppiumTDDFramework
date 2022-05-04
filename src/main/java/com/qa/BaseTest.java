@@ -1,7 +1,8 @@
-package com.qa.tests;
+package com.qa;
 
 import com.qa.tests.utils.TestUtils;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.InteractsWithApps;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -81,6 +82,12 @@ public class BaseTest {
         return e.getAttribute(attribute);
     }
 
+    public void closeApp(){
+        ((InteractsWithApps) driver).closeApp();
+    }
+    public void launchApp(){
+        ((InteractsWithApps) driver).launchApp();
+    }
     @AfterTest
     public void afterTest() {
         driver.quit();

@@ -11,6 +11,7 @@
         <parameter name="udid" value="emulator-5554"/>
         <classes>
             <class name="com.qa.tests.LoginTests"/>
+            <class name="com.qa.tests.ProductTests"/>
 
         </classes>
     </test>
