@@ -1,6 +1,8 @@
-package com.qa.tests;
+package com.qa;
+
 import com.qa.tests.utils.TestUtils;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.InteractsWithApps;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
@@ -12,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Properties;
 
 
@@ -20,11 +23,10 @@ public class BaseTest {
     protected static Properties prop;
     InputStream inputStream;
 
-    // Get Value from testng.xml file and set it to capabilities properties
     // Get the value from properties file and set it to capabilities
-    public BaseTest (){
+    public BaseTest() {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-       
+
     }
 
     @Parameters({"platformName", "platformVersion", "deviceName"})
@@ -34,6 +36,7 @@ public class BaseTest {
         try {
             prop = new Properties();
             String propFileName = "config.properties";
+            // Load properties file
             inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
             prop.load(inputStream);
 
@@ -76,11 +79,17 @@ public class BaseTest {
 
     public String getAttribute(MobileElement e, String attribute) {
         waitForVisibility(e);
-       return e.getAttribute(attribute);
+        return e.getAttribute(attribute);
     }
 
+    public void closeApp(){
+        ((InteractsWithApps) driver).closeApp();
+    }
+    public void launchApp(){
+        ((InteractsWithApps) driver).launchApp();
+    }
     @AfterTest
     public void afterTest() {
-    driver.quit();
+        driver.quit();
     }
 }

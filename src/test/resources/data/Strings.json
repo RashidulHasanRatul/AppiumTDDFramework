@@ -1,0 +1,15 @@
+{
+  "LoginPageExpectedData": {
+    "LoginErrorWarningText": "Username and password do not match any user in this service.",
+    "LoginSuccessText": "PRODUCTS"
+  },
+  "ProductPageExpectedData": {
+    "SLBTitle": "Sauce Labs Backpack",
+    "SLBPrice": "$29.99"
+  },
+  "ProductDetailsPageExpectedData": {
+    "SLBTitle": "Sauce Labs Backpack",
+    "SLBTxt": "carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection.",
+    "SLBPrice": "$29.99"
+  }
+}
