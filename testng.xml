@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Suite" parallel="false">
+<suite name="Suite" preserve-order="true" parallel="false">
     <listeners>
     <listener class-name="com.qa.listeners.TestListeners"/>
     </listeners>
@@ -10,7 +10,7 @@
         <parameter name="platformName" value="Android"/>
         <parameter name="udid" value="emulator-5554"/>
         <classes>
-            <class name="com.qa.tests.LoginTests"/>
+<!--            <class name="com.qa.tests.LoginTests"/>-->
             <class name="com.qa.tests.ProductTests"/>
 
         </classes>

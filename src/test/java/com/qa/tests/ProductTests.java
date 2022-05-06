@@ -17,12 +17,13 @@ import java.lang.reflect.Method;
 public class ProductTests extends BaseTest {
     LoginPage loginPage;
     ProductPage productPage;
+    ProductDetailsPage productDetailsPage;
+    SettingsPage settingsPage;
     JSONObject loginUsers;
     JSONObject expectedText;
     InputStream ExpectedDatais;
     InputStream datais;
-    ProductDetailsPage productDetailsPage;
-    SettingsPage settingsPage;
+
 
     @BeforeClass
     public void beforeClass() throws Exception {
