@@ -2,6 +2,7 @@ package com.qa;
 
 import com.qa.tests.utils.TestUtils;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.FindsByAndroidUIAutomator;
 import io.appium.java_client.InteractsWithApps;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
@@ -12,6 +13,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -21,18 +23,20 @@ import java.util.Properties;
 public class BaseTest {
     protected static AppiumDriver driver;
     protected static Properties prop;
+    protected static String dateTime;
     InputStream inputStream;
+    TestUtils utils;
 
     // Get the value from properties file and set it to capabilities
     public BaseTest() {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
-
     }
 
     @Parameters({"platformName", "platformVersion", "deviceName"})
     @BeforeTest
     public void beforeTest(String platformName, String platformVersion, String deviceName) throws Exception {
-
+        utils = new TestUtils();
+        dateTime = utils.getDateTime();
         try {
             prop = new Properties();
             String propFileName = "config.properties";
@@ -62,6 +66,14 @@ public class BaseTest {
 
     }
 
+    public AppiumDriver getDriver() {
+        return driver;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
     public void waitForVisibility(MobileElement e) {
         WebDriverWait wait = new WebDriverWait(driver, TestUtils.WAIT);
         wait.until(ExpectedConditions.visibilityOf(e));
@@ -82,12 +94,21 @@ public class BaseTest {
         return e.getAttribute(attribute);
     }
 
-    public void closeApp(){
+    public void closeApp() {
         ((InteractsWithApps) driver).closeApp();
     }
-    public void launchApp(){
+
+    public void launchApp() {
         ((InteractsWithApps) driver).launchApp();
     }
+
+    public MobileElement scrollToElement() {
+        return (MobileElement) ((FindsByAndroidUIAutomator) driver).findElementByAndroidUIAutomator(
+                "new UiScrollable(new UiSelector()" + ".scrollable(true)).scrollIntoView("
+                        + "new UiSelector().description(\"test-Price\"));");
+    }
+
+
     @AfterTest
     public void afterTest() {
         driver.quit();

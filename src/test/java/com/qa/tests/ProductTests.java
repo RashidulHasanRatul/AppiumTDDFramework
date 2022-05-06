@@ -94,6 +94,9 @@ public class ProductTests extends BaseTest {
         sa.assertEquals(SLBTitle, expectedText.getJSONObject("ProductDetailsPageExpectedData").getString("SLBTitle"));
         String SLBTxt = productDetailsPage.getSLBTxt();
         sa.assertEquals(SLBTxt, expectedText.getJSONObject("ProductDetailsPageExpectedData").getString("SLBTxt"));
+        productDetailsPage.scrollToElement();
+        String SLBPrice = productDetailsPage.getSLBPrice();
+        sa.assertEquals(SLBPrice, expectedText.getJSONObject("ProductDetailsPageExpectedData").getString("SLBPrice"));
         productPage = productDetailsPage.pressBackToProductPage();
         settingsPage = productPage.pressSettingsBtn();
         loginPage = settingsPage.pressLogoutBtn();

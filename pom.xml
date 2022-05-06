@@ -15,8 +15,6 @@
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
-        <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
-        <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
         <dependency>
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
@@ -51,6 +49,12 @@
             <version>20211205</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
 
     </dependencies>
 
