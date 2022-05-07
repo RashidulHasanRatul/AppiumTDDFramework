@@ -36,9 +36,7 @@ public class BaseTest {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
-    public String getDateTime() {
-        return dateTime;
-    }
+
 
     @BeforeMethod
     public void beforeMethod() {
@@ -48,19 +46,22 @@ public class BaseTest {
     @AfterMethod
     public void afterMethod(ITestResult result) throws IOException {
         String media = ((CanRecordScreen) driver).stopRecordingScreen();
-        Map<String, String> params = new HashMap<String, String>();
-        params = result.getTestContext().getCurrentXmlTest().getAllParameters();
+        if(result.getStatus() ==2){
+            Map<String, String> params = new HashMap<String, String>();
+            params = result.getTestContext().getCurrentXmlTest().getAllParameters();
 
-        String dir = "videos" + File.separator + params.get("platformName") + "_" + params.get("platformVersion") + "_" + params.get(("deviceName")) +
-                File.separator + dateTime + File.separator + result.getTestClass().getRealClass().getSimpleName() ;
+            String dir = "videos" + File.separator + params.get("platformName") + "_" + params.get("platformVersion") + "_" + params.get(("deviceName")) +
+                    File.separator + dateTime + File.separator + result.getTestClass().getRealClass().getSimpleName() ;
 
-        File videoFile = new File(dir);
-        if (!videoFile.exists()) {
-            videoFile.mkdirs();
+            File videoFile = new File(dir);
+            if (!videoFile.exists()) {
+                videoFile.mkdirs();
+            }
+
+            FileOutputStream stream = new FileOutputStream(videoFile+File.separator+result.getName()+".mp4");
+            stream.write(Base64.getDecoder().decode(media));
         }
 
-        FileOutputStream stream = new FileOutputStream(videoFile+File.separator+result.getName()+".mp4");
-       stream.write(Base64.getDecoder().decode(media));
 
 
     }
@@ -138,6 +139,9 @@ public class BaseTest {
                         + "new UiSelector().description(\"test-Price\"));");
     }
 
+    public String getDateTime() {
+        return dateTime;
+    }
 
     @AfterTest
     public void afterTest() {

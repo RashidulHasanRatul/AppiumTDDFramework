@@ -44,8 +44,8 @@ public class ProductTests extends BaseTest {
                 datais.close();
             }
         }
-        closeApp();
-        launchApp();
+//        closeApp();
+//        launchApp();
     }
 
     @AfterClass
@@ -59,6 +59,8 @@ public class ProductTests extends BaseTest {
         System.out.println("This is Before Method");
         loginPage = new LoginPage();
         System.out.println("\n" + "+++++++++++++++++ Start of Test +++++++++++++++++" + "\n" + "Test Name: " + method.getName());
+        closeApp();
+        launchApp();
     }
 
     @AfterMethod
