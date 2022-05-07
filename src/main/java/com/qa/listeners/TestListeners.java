@@ -24,6 +24,11 @@ public class TestListeners implements ITestListener {
     }
 
     @Override
+    public void onFinish(ITestContext context) {
+
+    }
+
+    @Override
     public void onTestSuccess(ITestResult result) {
 
     }
@@ -70,8 +75,5 @@ public class TestListeners implements ITestListener {
 
     }
 
-    @Override
-    public void onFinish(ITestContext context) {
 
-    }
 }

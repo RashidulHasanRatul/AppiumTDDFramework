@@ -8,15 +8,19 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.MobileCapabilityType;
+import io.appium.java_client.screenrecording.CanRecordScreen;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -30,6 +34,35 @@ public class BaseTest {
     // Get the value from properties file and set it to capabilities
     public BaseTest() {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    @BeforeMethod
+    public void beforeMethod() {
+        ((CanRecordScreen) driver).startRecordingScreen();
+    }
+
+    @AfterMethod
+    public void afterMethod(ITestResult result) throws IOException {
+        String media = ((CanRecordScreen) driver).stopRecordingScreen();
+        Map<String, String> params = new HashMap<String, String>();
+        params = result.getTestContext().getCurrentXmlTest().getAllParameters();
+
+        String dir = "videos" + File.separator + params.get("platformName") + "_" + params.get("platformVersion") + "_" + params.get(("deviceName")) +
+                File.separator + dateTime + File.separator + result.getTestClass().getRealClass().getSimpleName() ;
+
+        File videoFile = new File(dir);
+        if (!videoFile.exists()) {
+            videoFile.mkdirs();
+        }
+
+        FileOutputStream stream = new FileOutputStream(videoFile+File.separator+result.getName()+".mp4");
+       stream.write(Base64.getDecoder().decode(media));
+
+
     }
 
     @Parameters({"platformName", "platformVersion", "deviceName"})
@@ -70,9 +103,6 @@ public class BaseTest {
         return driver;
     }
 
-    public String getDateTime() {
-        return dateTime;
-    }
 
     public void waitForVisibility(MobileElement e) {
         WebDriverWait wait = new WebDriverWait(driver, TestUtils.WAIT);
