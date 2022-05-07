@@ -2,37 +2,75 @@ package com.qa;
 
 import com.qa.tests.utils.TestUtils;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.FindsByAndroidUIAutomator;
 import io.appium.java_client.InteractsWithApps;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.MobileCapabilityType;
+import io.appium.java_client.screenrecording.CanRecordScreen;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
-import java.io.InputStream;
+
+import java.io.*;
 import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 
 public class BaseTest {
     protected static AppiumDriver driver;
     protected static Properties prop;
+    protected static String dateTime;
     InputStream inputStream;
+    TestUtils utils;
 
     // Get the value from properties file and set it to capabilities
     public BaseTest() {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+    }
+
+
+
+    @BeforeMethod
+    public void beforeMethod() {
+        ((CanRecordScreen) driver).startRecordingScreen();
+    }
+
+    @AfterMethod
+    public void afterMethod(ITestResult result) throws IOException {
+        String media = ((CanRecordScreen) driver).stopRecordingScreen();
+        if(result.getStatus() ==2){
+            Map<String, String> params = new HashMap<String, String>();
+            params = result.getTestContext().getCurrentXmlTest().getAllParameters();
+
+            String dir = "videos" + File.separator + params.get("platformName") + "_" + params.get("platformVersion") + "_" + params.get(("deviceName")) +
+                    File.separator + dateTime + File.separator + result.getTestClass().getRealClass().getSimpleName() ;
+
+            File videoFile = new File(dir);
+            if (!videoFile.exists()) {
+                videoFile.mkdirs();
+            }
+
+            FileOutputStream stream = new FileOutputStream(videoFile+File.separator+result.getName()+".mp4");
+            stream.write(Base64.getDecoder().decode(media));
+        }
+
+
 
     }
 
     @Parameters({"platformName", "platformVersion", "deviceName"})
     @BeforeTest
     public void beforeTest(String platformName, String platformVersion, String deviceName) throws Exception {
-
+        utils = new TestUtils();
+        dateTime = utils.getDateTime();
         try {
             prop = new Properties();
             String propFileName = "config.properties";
@@ -62,6 +100,11 @@ public class BaseTest {
 
     }
 
+    public AppiumDriver getDriver() {
+        return driver;
+    }
+
+
     public void waitForVisibility(MobileElement e) {
         WebDriverWait wait = new WebDriverWait(driver, TestUtils.WAIT);
         wait.until(ExpectedConditions.visibilityOf(e));
@@ -82,12 +125,24 @@ public class BaseTest {
         return e.getAttribute(attribute);
     }
 
-    public void closeApp(){
+    public void closeApp() {
         ((InteractsWithApps) driver).closeApp();
     }
-    public void launchApp(){
+
+    public void launchApp() {
         ((InteractsWithApps) driver).launchApp();
     }
+
+    public MobileElement scrollToElement() {
+        return (MobileElement) ((FindsByAndroidUIAutomator) driver).findElementByAndroidUIAutomator(
+                "new UiScrollable(new UiSelector()" + ".scrollable(true)).scrollIntoView("
+                        + "new UiSelector().description(\"test-Price\"));");
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
     @AfterTest
     public void afterTest() {
         driver.quit();

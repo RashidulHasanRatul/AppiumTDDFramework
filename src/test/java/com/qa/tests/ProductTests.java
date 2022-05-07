@@ -44,8 +44,8 @@ public class ProductTests extends BaseTest {
                 datais.close();
             }
         }
-        closeApp();
-        launchApp();
+//        closeApp();
+//        launchApp();
     }
 
     @AfterClass
@@ -59,6 +59,8 @@ public class ProductTests extends BaseTest {
         System.out.println("This is Before Method");
         loginPage = new LoginPage();
         System.out.println("\n" + "+++++++++++++++++ Start of Test +++++++++++++++++" + "\n" + "Test Name: " + method.getName());
+        closeApp();
+        launchApp();
     }
 
     @AfterMethod
@@ -94,6 +96,9 @@ public class ProductTests extends BaseTest {
         sa.assertEquals(SLBTitle, expectedText.getJSONObject("ProductDetailsPageExpectedData").getString("SLBTitle"));
         String SLBTxt = productDetailsPage.getSLBTxt();
         sa.assertEquals(SLBTxt, expectedText.getJSONObject("ProductDetailsPageExpectedData").getString("SLBTxt"));
+        productDetailsPage.scrollToElement();
+        String SLBPrice = productDetailsPage.getSLBPrice();
+        sa.assertEquals(SLBPrice, expectedText.getJSONObject("ProductDetailsPageExpectedData").getString("SLBPrice"));
         productPage = productDetailsPage.pressBackToProductPage();
         settingsPage = productPage.pressSettingsBtn();
         loginPage = settingsPage.pressLogoutBtn();

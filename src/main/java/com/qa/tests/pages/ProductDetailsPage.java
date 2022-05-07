@@ -9,6 +9,9 @@ public class ProductDetailsPage extends BaseTest {
     public MobileElement SLBTitle;
     @AndroidFindBy(xpath = "//android.view.ViewGroup[@content-desc=\"test-Description\"]/android.widget.TextView[2]")
     public MobileElement SLBText;
+    @AndroidFindBy(accessibility = "test-Price")
+    public MobileElement SLBPrice;
+
 
     @AndroidFindBy(accessibility = "test-BACK TO PRODUCTS")
     public MobileElement backToProductBtn;
@@ -21,6 +24,17 @@ public class ProductDetailsPage extends BaseTest {
     public String getSLBTxt() {
         System.out.println("SLBTxt is "+SLBText.getText());
         return getAttribute(SLBText, "text");
+    }
+
+    public String getSLBPrice() {
+        System.out.println("SLBTxt is "+SLBPrice.getText());
+        return getAttribute(SLBPrice, "text");
+    }
+
+    public ProductDetailsPage scrollToSLBPrice() {
+        System.out.println("SLBTxt is "+SLBPrice.getText());
+        scrollToElement();
+        return this;
     }
 
     public ProductPage pressBackToProductPage(){
