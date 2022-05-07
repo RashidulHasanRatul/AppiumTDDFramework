@@ -22,6 +22,7 @@ public class LoginTests extends BaseTest {
 
     @BeforeClass
     public void beforeClass() throws Exception {
+
         try {
             System.out.println("Before Class");
             String dataFile = "data/loginUsers.json";

@@ -9,6 +9,8 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.screenrecording.CanRecordScreen;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -30,6 +32,7 @@ public class BaseTest {
     protected static String dateTime;
     InputStream inputStream;
     TestUtils utils;
+    static Logger log = LogManager.getLogger(BaseTest.class.getName());
 
     // Get the value from properties file and set it to capabilities
     public BaseTest() {
@@ -40,11 +43,13 @@ public class BaseTest {
 
     @BeforeMethod
     public void beforeMethod() {
+        log.info("Test case started");
         ((CanRecordScreen) driver).startRecordingScreen();
     }
 
     @AfterMethod
     public void afterMethod(ITestResult result) throws IOException {
+        log.info("Test case status: " + result.getStatus());
         String media = ((CanRecordScreen) driver).stopRecordingScreen();
         if(result.getStatus() ==2){
             Map<String, String> params = new HashMap<String, String>();
@@ -69,6 +74,7 @@ public class BaseTest {
     @Parameters({"platformName", "platformVersion", "deviceName"})
     @BeforeTest
     public void beforeTest(String platformName, String platformVersion, String deviceName) throws Exception {
+       log.info("Before Test From BaseTest");
         utils = new TestUtils();
         dateTime = utils.getDateTime();
         try {
@@ -111,11 +117,13 @@ public class BaseTest {
     }
 
     public void click(MobileElement e) {
+        log.info("Clicking on element: " + e.getText());
         waitForVisibility(e);
         e.click();
     }
 
     public void sendKeys(MobileElement e, String text) {
+        log.info("Entering text: " + text);
         waitForVisibility(e);
         e.sendKeys(text);
     }
@@ -126,14 +134,17 @@ public class BaseTest {
     }
 
     public void closeApp() {
+        log.info("Closing the app");
         ((InteractsWithApps) driver).closeApp();
     }
 
     public void launchApp() {
+        log.info("Launching the app");
         ((InteractsWithApps) driver).launchApp();
     }
 
     public MobileElement scrollToElement() {
+        log.info("Scrolling to element");
         return (MobileElement) ((FindsByAndroidUIAutomator) driver).findElementByAndroidUIAutomator(
                 "new UiScrollable(new UiSelector()" + ".scrollable(true)).scrollIntoView("
                         + "new UiSelector().description(\"test-Price\"));");
@@ -145,6 +156,7 @@ public class BaseTest {
 
     @AfterTest
     public void afterTest() {
+        log.info("Quite the driver");
         driver.quit();
     }
 }
