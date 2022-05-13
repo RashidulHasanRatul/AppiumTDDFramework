@@ -1,5 +1,6 @@
 package com.qa;
 
+import com.aventstack.extentreports.testng.listener.ExtentITestListenerAdapter;
 import com.qa.tests.utils.TestUtils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.FindsByAndroidUIAutomator;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-
+@Listeners (ExtentITestListenerAdapter.class)
 public class BaseTest {
     protected static AppiumDriver driver;
     protected static Properties prop;
