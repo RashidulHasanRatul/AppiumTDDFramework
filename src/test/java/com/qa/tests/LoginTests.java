@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
 import java.io.InputStream;
 
 import java.lang.reflect.Method;
@@ -22,6 +23,7 @@ public class LoginTests extends BaseTest {
 
     @BeforeClass
     public void beforeClass() throws Exception {
+
         try {
             System.out.println("Before Class");
             String dataFile = "data/loginUsers.json";
@@ -35,9 +37,9 @@ public class LoginTests extends BaseTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-           if (datais != null) {
-              datais.close();
-           }
+            if (datais != null) {
+                datais.close();
+            }
         }
 
         closeApp();
@@ -53,9 +55,9 @@ public class LoginTests extends BaseTest {
 
     @BeforeMethod
     public void beforeMethod(Method method) {
-    	System.out.println("This is Before Method");
-    	loginPage = new LoginPage();
-        System.out.println("\n"+"+++++++++++++++++ Start of Test +++++++++++++++++"+"\n"+"Test Name: " + method.getName());
+        System.out.println("This is Before Method");
+        loginPage = new LoginPage();
+        System.out.println("\n" + "+++++++++++++++++ Start of Test +++++++++++++++++" + "\n" + "Test Name: " + method.getName());
 
     }
 
@@ -81,7 +83,7 @@ public class LoginTests extends BaseTest {
 
     @Test
     public void invalidPassword() {
-    	System.out.println("This is Invalid Password Block");
+        System.out.println("This is Invalid Password Block");
         loginPage.enterUserName(loginUsers.getJSONObject("invalidPassword").getString("username"));
         loginPage.enterPassWord(loginUsers.getJSONObject("invalidPassword").getString("password"));
         loginPage.pressLoginButton();
@@ -93,15 +95,15 @@ public class LoginTests extends BaseTest {
     }
 
     @Test
-
+// This is for Validate Login with Valid UserName and Password
     public void validLogin() {
-     	System.out.println("This is valid Password Block");
+        System.out.println("This is valid Password Block");
         loginPage.enterUserName(loginUsers.getJSONObject("validUser").getString("username"));
         loginPage.enterPassWord(loginUsers.getJSONObject("validUser").getString("password"));
         productPage = loginPage.pressLoginButton();
         String actualProductTitle = productPage.getProductTitle();
-       String expectedProductTitle = expectedText.getJSONObject("LoginPageExpectedData").getString("LoginSuccessText");
-       System.out.println("Actual Product Title: " + actualProductTitle + "\n" + "Expected Product Title: " + expectedProductTitle);
+        String expectedProductTitle = expectedText.getJSONObject("LoginPageExpectedData").getString("LoginSuccessText");
+        System.out.println("Actual Product Title: " + actualProductTitle + "\n" + "Expected Product Title: " + expectedProductTitle);
         Assert.assertEquals(actualProductTitle, expectedProductTitle);
     }
 

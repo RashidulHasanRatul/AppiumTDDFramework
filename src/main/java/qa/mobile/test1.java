@@ -79,7 +79,7 @@ public class test1 {
         capabilities.setCapability("appActivity", "com.swaglabsmobileapp.SplashActivity");
         capabilities.setCapability("avd", "Pixel_4_API_27");
         capabilities.setCapability("avdLaunchTimeout", "180000");
-        String AndroidAppUrl = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "Android.SauceLabs.Mobile.Sample.app.2.7.1.apk";
+        String AndroidAppUrl = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "Android.SauceLabs.Mobile.Sample.app.2.7.1.0.apk";
         //capabilities.setCapability(MobileCapabilityType.APP, AndroidAppUrl);
 
         URL url = new URL("http://0.0.0.0:4723/wd/hub");

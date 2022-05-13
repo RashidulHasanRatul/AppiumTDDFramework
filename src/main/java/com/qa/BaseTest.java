@@ -9,6 +9,7 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.screenrecording.CanRecordScreen;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,6 +18,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.util.Base64;
 import java.util.HashMap;
@@ -28,8 +30,10 @@ public class BaseTest {
     protected static AppiumDriver driver;
     protected static Properties prop;
     protected static String dateTime;
+    private static AppiumDriverLocalService server;
     InputStream inputStream;
     TestUtils utils;
+
 
     // Get the value from properties file and set it to capabilities
     public BaseTest() {
@@ -37,38 +41,80 @@ public class BaseTest {
     }
 
 
-
     @BeforeMethod
     public void beforeMethod() {
+
         ((CanRecordScreen) driver).startRecordingScreen();
     }
 
     @AfterMethod
     public void afterMethod(ITestResult result) throws IOException {
+
         String media = ((CanRecordScreen) driver).stopRecordingScreen();
-        if(result.getStatus() ==2){
+        if (result.getStatus() == 2) {
             Map<String, String> params = new HashMap<String, String>();
             params = result.getTestContext().getCurrentXmlTest().getAllParameters();
 
             String dir = "videos" + File.separator + params.get("platformName") + "_" + params.get("platformVersion") + "_" + params.get(("deviceName")) +
-                    File.separator + dateTime + File.separator + result.getTestClass().getRealClass().getSimpleName() ;
+                    File.separator + dateTime + File.separator + result.getTestClass().getRealClass().getSimpleName();
 
             File videoFile = new File(dir);
             if (!videoFile.exists()) {
                 videoFile.mkdirs();
             }
 
-            FileOutputStream stream = new FileOutputStream(videoFile+File.separator+result.getName()+".mp4");
+            FileOutputStream stream = new FileOutputStream(videoFile + File.separator + result.getName() + ".mp4");
             stream.write(Base64.getDecoder().decode(media));
         }
 
 
+    }
 
+    @BeforeSuite
+    public void beforeSuite() throws Exception {
+        server = getAppiumServerDefault();
+        // check appium server is running or not
+        if (!checkIfAppiumServerIsRunnning(4723)) {
+            server.start();
+            server.clearOutPutStreams();
+            System.out.println("Appium server started");
+        } else {
+            System.out.println("Appium server is already running");
+        }
+
+
+    }
+
+    public boolean checkIfAppiumServerIsRunnning(int port) throws Exception {
+        boolean isAppiumServerRunning = false;
+        ServerSocket socket;
+        try {
+            socket = new ServerSocket(port);
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("1");
+            isAppiumServerRunning = true;
+        } finally {
+            socket = null;
+        }
+        return isAppiumServerRunning;
+    }
+
+
+    @AfterSuite
+    public void afterSuite() {
+        server.stop();
+        System.out.println("Appium server stopped");
+    }
+
+    public AppiumDriverLocalService getAppiumServerDefault() {
+        return AppiumDriverLocalService.buildDefaultService();
     }
 
     @Parameters({"platformName", "platformVersion", "deviceName"})
     @BeforeTest
     public void beforeTest(String platformName, String platformVersion, String deviceName) throws Exception {
+
         utils = new TestUtils();
         dateTime = utils.getDateTime();
         try {
@@ -111,11 +157,13 @@ public class BaseTest {
     }
 
     public void click(MobileElement e) {
+
         waitForVisibility(e);
         e.click();
     }
 
     public void sendKeys(MobileElement e, String text) {
+
         waitForVisibility(e);
         e.sendKeys(text);
     }
@@ -126,14 +174,17 @@ public class BaseTest {
     }
 
     public void closeApp() {
+
         ((InteractsWithApps) driver).closeApp();
     }
 
     public void launchApp() {
+
         ((InteractsWithApps) driver).launchApp();
     }
 
     public MobileElement scrollToElement() {
+
         return (MobileElement) ((FindsByAndroidUIAutomator) driver).findElementByAndroidUIAutomator(
                 "new UiScrollable(new UiSelector()" + ".scrollable(true)).scrollIntoView("
                         + "new UiSelector().description(\"test-Price\"));");
@@ -145,6 +196,7 @@ public class BaseTest {
 
     @AfterTest
     public void afterTest() {
+
         driver.quit();
     }
 }
