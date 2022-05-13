@@ -32,7 +32,7 @@ public class BaseTest {
     protected static String dateTime;
     InputStream inputStream;
     TestUtils utils;
-    static Logger log = LogManager.getLogger(BaseTest.class.getName());
+ 
 
     // Get the value from properties file and set it to capabilities
     public BaseTest() {
@@ -40,33 +40,31 @@ public class BaseTest {
     }
 
 
-
     @BeforeMethod
     public void beforeMethod() {
-        log.info("Test case started");
+
         ((CanRecordScreen) driver).startRecordingScreen();
     }
 
     @AfterMethod
     public void afterMethod(ITestResult result) throws IOException {
-        log.info("Test case status: " + result.getStatus());
+
         String media = ((CanRecordScreen) driver).stopRecordingScreen();
-        if(result.getStatus() ==2){
+        if (result.getStatus() == 2) {
             Map<String, String> params = new HashMap<String, String>();
             params = result.getTestContext().getCurrentXmlTest().getAllParameters();
 
             String dir = "videos" + File.separator + params.get("platformName") + "_" + params.get("platformVersion") + "_" + params.get(("deviceName")) +
-                    File.separator + dateTime + File.separator + result.getTestClass().getRealClass().getSimpleName() ;
+                    File.separator + dateTime + File.separator + result.getTestClass().getRealClass().getSimpleName();
 
             File videoFile = new File(dir);
             if (!videoFile.exists()) {
                 videoFile.mkdirs();
             }
 
-            FileOutputStream stream = new FileOutputStream(videoFile+File.separator+result.getName()+".mp4");
+            FileOutputStream stream = new FileOutputStream(videoFile + File.separator + result.getName() + ".mp4");
             stream.write(Base64.getDecoder().decode(media));
         }
-
 
 
     }
@@ -74,7 +72,7 @@ public class BaseTest {
     @Parameters({"platformName", "platformVersion", "deviceName"})
     @BeforeTest
     public void beforeTest(String platformName, String platformVersion, String deviceName) throws Exception {
-       log.info("Before Test From BaseTest");
+
         utils = new TestUtils();
         dateTime = utils.getDateTime();
         try {
@@ -117,13 +115,13 @@ public class BaseTest {
     }
 
     public void click(MobileElement e) {
-        log.info("Clicking on element: " + e.getText());
+
         waitForVisibility(e);
         e.click();
     }
 
     public void sendKeys(MobileElement e, String text) {
-        log.info("Entering text: " + text);
+
         waitForVisibility(e);
         e.sendKeys(text);
     }
@@ -134,17 +132,17 @@ public class BaseTest {
     }
 
     public void closeApp() {
-        log.info("Closing the app");
+
         ((InteractsWithApps) driver).closeApp();
     }
 
     public void launchApp() {
-        log.info("Launching the app");
+
         ((InteractsWithApps) driver).launchApp();
     }
 
     public MobileElement scrollToElement() {
-        log.info("Scrolling to element");
+
         return (MobileElement) ((FindsByAndroidUIAutomator) driver).findElementByAndroidUIAutomator(
                 "new UiScrollable(new UiSelector()" + ".scrollable(true)).scrollIntoView("
                         + "new UiSelector().description(\"test-Price\"));");
@@ -156,7 +154,7 @@ public class BaseTest {
 
     @AfterTest
     public void afterTest() {
-        log.info("Quite the driver");
+
         driver.quit();
     }
 }
