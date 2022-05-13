@@ -9,8 +9,7 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.screenrecording.CanRecordScreen;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,6 +18,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.util.Base64;
 import java.util.HashMap;
@@ -30,9 +30,10 @@ public class BaseTest {
     protected static AppiumDriver driver;
     protected static Properties prop;
     protected static String dateTime;
+    private static AppiumDriverLocalService server;
     InputStream inputStream;
     TestUtils utils;
- 
+
 
     // Get the value from properties file and set it to capabilities
     public BaseTest() {
@@ -67,6 +68,47 @@ public class BaseTest {
         }
 
 
+    }
+
+    @BeforeSuite
+    public void beforeSuite() throws Exception {
+        server = getAppiumServerDefault();
+        // check appium server is running or not
+        if (!checkIfAppiumServerIsRunnning(4723)) {
+            server.start();
+            server.clearOutPutStreams();
+            System.out.println("Appium server started");
+        } else {
+            System.out.println("Appium server is already running");
+        }
+
+
+    }
+
+    public boolean checkIfAppiumServerIsRunnning(int port) throws Exception {
+        boolean isAppiumServerRunning = false;
+        ServerSocket socket;
+        try {
+            socket = new ServerSocket(port);
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("1");
+            isAppiumServerRunning = true;
+        } finally {
+            socket = null;
+        }
+        return isAppiumServerRunning;
+    }
+
+
+    @AfterSuite
+    public void afterSuite() {
+        server.stop();
+        System.out.println("Appium server stopped");
+    }
+
+    public AppiumDriverLocalService getAppiumServerDefault() {
+        return AppiumDriverLocalService.buildDefaultService();
     }
 
     @Parameters({"platformName", "platformVersion", "deviceName"})
