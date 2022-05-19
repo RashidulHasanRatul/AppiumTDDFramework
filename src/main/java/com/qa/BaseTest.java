@@ -1,5 +1,6 @@
 package com.qa;
 
+
 import com.qa.tests.utils.TestUtils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.FindsByAndroidUIAutomator;
@@ -24,7 +25,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
 
 public class BaseTest {
     protected static AppiumDriver driver;
