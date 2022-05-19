@@ -5,6 +5,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,12 +16,14 @@ public class ExtentReport {
 
     public synchronized static ExtentReports getReporter() {
         if (extent == null) {
-            ExtentSparkReporter html = new ExtentSparkReporter("Extent.html");
-            html.config().setDocumentTitle("Appium TDD Framework Design");
-            html.config().setReportName("Sauce Lab Appium Test Report");
-            html.config().setTheme(Theme.DARK);
-            extent = new ExtentReports();
-            extent.attachReporter(html);
+
+                ExtentSparkReporter html = new ExtentSparkReporter("TestReport" + File.separator +"Extent.html");
+                html.config().setDocumentTitle("Appium TDD Framework Design");
+                html.config().setReportName("Sauce Lab Appium Test Report");
+                html.config().setTheme(Theme.DARK);
+                extent = new ExtentReports();
+                extent.attachReporter(html);
+
         }
 
         return extent;

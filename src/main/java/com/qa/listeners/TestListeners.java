@@ -1,6 +1,8 @@
 package com.qa.listeners;
 
+import com.aventstack.extentreports.Status;
 import com.qa.BaseTest;
+import com.qa.reports.ExtentReport;
 import org.openqa.selenium.OutputType;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -20,16 +22,14 @@ public class TestListeners implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-
+        BaseTest base = new BaseTest();
+        ExtentReport.startTest(result.getName(), result.getMethod().getDescription()).assignCategory(base.getPlatform() + "_" + base.getDeviceName()).assignAuthor("Rashidul Hasan,SDET @ FinSource Limited");
     }
 
-    @Override
-    public void onFinish(ITestContext context) {
-
-    }
 
     @Override
     public void onTestSuccess(ITestResult result) {
+        ExtentReport.getTest().log(Status.PASS, "Test Passed");
 
     }
 
@@ -56,10 +56,13 @@ public class TestListeners implements ITestListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        ExtentReport.getTest().log(Status.FAIL, "Test Failed");
+
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
+        ExtentReport.getTest().log(Status.SKIP, "Test Skipped");
 
 
     }
@@ -75,5 +78,8 @@ public class TestListeners implements ITestListener {
 
     }
 
-
+    @Override
+    public void onFinish(ITestContext context) {
+        ExtentReport.getReporter().flush();
+    }
 }
