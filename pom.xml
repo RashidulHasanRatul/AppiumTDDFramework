@@ -68,14 +68,13 @@
             <artifactId>log4j-api</artifactId>
             <version>2.17.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports-testng-adapter -->
+
+
         <dependency>
             <groupId>com.aventstack</groupId>
-            <artifactId>extentreports-testng-adapter</artifactId>
-            <version>1.0.7</version>
+            <artifactId>extentreports</artifactId>
+            <version>5.0.6</version>
         </dependency>
-
-
     </dependencies>
 
 </project>
