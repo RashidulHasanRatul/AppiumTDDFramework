@@ -1,6 +1,4 @@
 package com.qa;
-
-
 import com.aventstack.extentreports.Status;
 import com.qa.reports.ExtentReport;
 import com.qa.tests.utils.TestUtils;
@@ -19,7 +17,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.URL;
@@ -33,13 +30,11 @@ public class BaseTest {
     protected static Properties prop;
     protected static String dateTime;
     private static AppiumDriverLocalService server;
-
     protected static ThreadLocal<String> platform = new ThreadLocal<String>();
     protected static ThreadLocal<String> deviceName = new ThreadLocal<String>();
 
     InputStream inputStream;
     TestUtils utils;
-
 
     // Get the value from properties file and set it to capabilities
     public BaseTest() {
@@ -53,7 +48,6 @@ public class BaseTest {
     public void setPlatform(String platform2) {
         platform.set(platform2);
     }
-
 
     public String getDeviceName() {
         return deviceName.get();
@@ -89,7 +83,6 @@ public class BaseTest {
             stream.write(Base64.getDecoder().decode(media));
         }
 
-
     }
 
     @BeforeSuite
@@ -103,8 +96,6 @@ public class BaseTest {
         } else {
             System.out.println("Appium server is already running");
         }
-
-
     }
 
     public boolean checkIfAppiumServerIsRunnning(int port) throws Exception {
@@ -165,14 +156,11 @@ public class BaseTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public AppiumDriver getDriver() {
         return driver;
     }
-
 
     public void waitForVisibility(MobileElement e) {
         WebDriverWait wait = new WebDriverWait(driver, TestUtils.WAIT);
@@ -197,12 +185,10 @@ public class BaseTest {
     }
 
     public void closeApp() {
-
         ((InteractsWithApps) driver).closeApp();
     }
 
     public void launchApp() {
-
         ((InteractsWithApps) driver).launchApp();
     }
 
@@ -216,7 +202,6 @@ public class BaseTest {
     public String getDateTime() {
         return dateTime;
     }
-
     @AfterTest
     public void afterTest() {
 

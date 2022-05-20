@@ -8,7 +8,6 @@ import org.openqa.selenium.OutputType;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.io.FileUtils;
 
 public class TestListeners implements ITestListener {
@@ -74,8 +72,6 @@ public class TestListeners implements ITestListener {
     @Override
     public void onTestSkipped(ITestResult result) {
         ExtentReport.getTest().log(Status.SKIP, "Test Skipped");
-
-
     }
 
     @Override
