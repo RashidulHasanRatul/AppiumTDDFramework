@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 *.mp4
+*.png
 # Log file
 *.log
 
