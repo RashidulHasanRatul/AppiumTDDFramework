@@ -1,6 +1,8 @@
 package com.qa;
 
 
+import com.aventstack.extentreports.Status;
+import com.qa.reports.ExtentReport;
 import com.qa.tests.utils.TestUtils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.FindsByAndroidUIAutomator;
@@ -31,6 +33,10 @@ public class BaseTest {
     protected static Properties prop;
     protected static String dateTime;
     private static AppiumDriverLocalService server;
+
+    protected static ThreadLocal<String> platform = new ThreadLocal<String>();
+    protected static ThreadLocal<String> deviceName = new ThreadLocal<String>();
+
     InputStream inputStream;
     TestUtils utils;
 
@@ -40,6 +46,22 @@ public class BaseTest {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
+    public String getPlatform() {
+        return platform.get();
+    }
+
+    public void setPlatform(String platform2) {
+        platform.set(platform2);
+    }
+
+
+    public String getDeviceName() {
+        return deviceName.get();
+    }
+
+    public void setDeviceName(String deviceName2) {
+        deviceName.set(deviceName2);
+    }
 
     @BeforeMethod
     public void beforeMethod() {
@@ -114,7 +136,8 @@ public class BaseTest {
     @Parameters({"platformName", "platformVersion", "deviceName"})
     @BeforeTest
     public void beforeTest(String platformName, String platformVersion, String deviceName) throws Exception {
-
+        setPlatform(platformName);
+        setDeviceName(deviceName);
         utils = new TestUtils();
         dateTime = utils.getDateTime();
         try {
@@ -157,13 +180,13 @@ public class BaseTest {
     }
 
     public void click(MobileElement e) {
-
+        ExtentReport.getTest().log(Status.INFO, "Click on " + e.getText());
         waitForVisibility(e);
         e.click();
     }
 
     public void sendKeys(MobileElement e, String text) {
-
+        ExtentReport.getTest().log(Status.INFO, "Send Keys" + e.getText());
         waitForVisibility(e);
         e.sendKeys(text);
     }

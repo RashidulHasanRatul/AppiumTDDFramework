@@ -4,8 +4,6 @@ import com.qa.BaseTest;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
-import java.sql.Struct;
-
 public class LoginPage extends BaseTest {
     @AndroidFindBy(accessibility = "test-Username")
     public MobileElement UserNameTextField;
