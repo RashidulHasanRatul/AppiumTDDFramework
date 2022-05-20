@@ -1,5 +1,6 @@
 package com.qa.listeners;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.qa.BaseTest;
 import com.qa.reports.ExtentReport;
@@ -9,8 +10,11 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +50,12 @@ public class TestListeners implements ITestListener {
         // Get Screenshot
         BaseTest baseTest = new BaseTest();
         File file = baseTest.getDriver().getScreenshotAs(OutputType.FILE);
+        byte[] encoded = null;
+        try {
+            encoded = Base64.getEncoder().encode(FileUtils.readFileToByteArray(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // copy file to screenshot folder
         Map<String, String> params = new HashMap<String, String>();
         params = result.getTestContext().getCurrentXmlTest().getAllParameters();
@@ -56,8 +66,9 @@ public class TestListeners implements ITestListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ExtentReport.getTest().log(Status.FAIL, "Test Failed");
-
+        ExtentReport.getTest().fail("Test Failed", MediaEntityBuilder.createScreenCaptureFromPath(imagePath).build());
+        ExtentReport.getTest().fail("Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(new String(encoded, StandardCharsets.US_ASCII)).build());
+        ExtentReport.getTest().fail(result.getThrowable());
     }
 
     @Override
